@@ -12,7 +12,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/jonasw234/bedienungsanleitu.ng_downloader",
     packages=setuptools.find_packages(),
-    install_requires=["requests", "bs4", "PIL"],
+    install_requires=["requests", "beautifulsoup4", "PIL"],
     include_package_data=True,
     classifiers=[
         "Environment :: Console",
