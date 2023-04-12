@@ -17,4 +17,4 @@ Or use [`pipx`](https://pypi.org/project/pipx/) and install with
 ```
 pipx install git+https://github.com/jonasw234/bedienungsanleitu.ng_downloader
 ```
-To OCR your PDF files, install the `ocrmypdf` Python package and the [`tesseract`](https://tesseract-ocr.github.io/tessdoc/Installation.html) binary.
+To OCR your PDF files, install the [`ocrmypdf`](https://ocrmypdf.readthedocs.io/en/latest/installation.html) Python package and the [`tesseract`](https://tesseract-ocr.github.io/tessdoc/Installation.html) binary.
