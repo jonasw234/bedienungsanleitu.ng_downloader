@@ -23,9 +23,7 @@ def main(url: str):
     logging.info("Starting download for %s.", url)
     response = requests.get(url)
     soup = BeautifulSoup(response.text, features="html.parser")
-    viewer_id = [
-        link for link in soup.find_all("link", href=lambda x: x and "/viewer/" in x)
-    ]
+    viewer_id = list(soup.find_all("link", href=lambda x: x and "/viewer/" in x))
     if not viewer_id:
         logging.error("Cannot determine viewer id!")
         return
@@ -52,11 +50,13 @@ def main(url: str):
         pdf_path, "PDF", resolution=100.0, save_all=True, append_images=images[1:]
     )
     logging.debug("Removing temporary image files.")
-    [os.remove(page_file) for page_file in page_files]
+    for page_file in page_files:
+        os.remove(page_file)
     logging.info("Trying to OCR the PDF to make it searchable (not perfect) ...")
     try:
         ocrmypdf_returncode = subprocess.run(
-            ["ocrmypdf", pdf_path, f"{os.path.splitext(pdf_path)[0]}_ocr.pdf"]
+            ["ocrmypdf", pdf_path, f"{os.path.splitext(pdf_path)[0]}_ocr.pdf"],
+            check=True,
         ).returncode
         if ocrmypdf_returncode == 0:
             os.remove(pdf_path)
@@ -74,7 +74,7 @@ if __name__ == "__main__":
         )
         sys.exit(1)
     prefix = "https://www.bedienungsanleitu.ng/"
-    if prefix != sys.argv[1][:len(prefix)]:
+    if prefix != sys.argv[1][: len(prefix)]:
         logging.error("URL must start with %s.", prefix)
         sys.exit(1)
     main(sys.argv[1])
