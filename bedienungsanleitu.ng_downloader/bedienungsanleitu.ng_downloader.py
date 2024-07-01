@@ -27,12 +27,12 @@ def main(url: str):
     if not viewer_id:
         logging.error("Cannot determine viewer id!")
         return
-    viewer_id = viewer_id[0].attrs["href"].split("/")[2]
+    viewer_id = viewer_id[0].attrs["href"].split("/")[3]
     logging.debug("Viewer id detected as %d", viewer_id)
     page_number = 1
     while True:
         download = requests.get(
-            f"https://www.bedienungsanleitu.ng/viewer/{viewer_id}/{page_number}/large.png"
+            f"https://www.bedienungsanleitu.ng/viewer/2/{viewer_id}/{page_number}/large.png"
         )
         if download.status_code == 200:
             with open(f"{page_number}.png", "wb") as page:
