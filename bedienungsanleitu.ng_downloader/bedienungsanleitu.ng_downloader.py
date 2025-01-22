@@ -2,7 +2,6 @@
 """Downloads PDF files from the bedienungsanleitu.ng website"""
 import logging
 import os
-import subprocess
 import sys
 
 import requests
