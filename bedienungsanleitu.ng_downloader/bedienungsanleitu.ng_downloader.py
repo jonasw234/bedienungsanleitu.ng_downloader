@@ -27,7 +27,7 @@ def main(url: str):
     if not viewer_id:
         logging.error("Cannot determine viewer id!")
         return
-    viewer_id = viewer_id[0].attrs["href"].split("/")[3]
+    viewer_id = viewer_id[0].attrs["href"].split("/")[2]
     logging.debug("Viewer id detected as %d", viewer_id)
     page_number = 1
     while True:
