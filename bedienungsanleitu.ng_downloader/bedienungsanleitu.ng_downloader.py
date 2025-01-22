@@ -7,7 +7,7 @@ import sys
 
 import requests
 from bs4 import BeautifulSoup
-from PIL import Image
+import pdfkit
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(message)s")
 
@@ -30,40 +30,42 @@ def main(url: str):
     viewer_id = viewer_id[0].attrs["href"].split("/")[2]
     logging.debug("Viewer id detected as %d", viewer_id)
     page_number = 1
+    temp_image_files = set()
     while True:
         download = requests.get(
-            f"https://www.bedienungsanleitu.ng/viewer/2/{viewer_id}/{page_number}/large.png"
+            f"https://www.bedienungsanleitu.ng/viewer/{viewer_id}/{page_number}/page-{page_number}.page"
         )
         if download.status_code == 200:
-            with open(f"{page_number}.png", "wb") as page:
-                page.write(download.content)
+            with open(f"{page_number}.html", "w", encoding="utf-8") as page:
+                page.write(download.text)
+            subsoup = BeautifulSoup(download.text, features="html.parser")
+            images = subsoup.find_all("img")
+            for image in images:
+                # Download the images
+                download = requests.get(f"https://www.bedienungsanleitu.ng/viewer/{viewer_id}/{page_number}/{image.attrs['src']}")
+                if download.status_code == 200:
+                    image_path = image.attrs["src"].split("/")[-1]
+                    with open(image_path, "wb") as image:
+                        image.write(download.content)
+                        temp_image_files.add(image_path)
+                else:
+                    logging.warning("Could not download image %s", image.attrs["src"])
             logging.debug("Downloaded page %d", page_number)
             page_number += 1
         else:
             logging.debug("No more pages to download detected.")
             break
-    page_files = [f"{file}.png" for file in range(1, page_number)]
-    images = [Image.open(page_file) for page_file in page_files]
+    page_files = [f"{file}.html" for file in range(1, page_number)]
     pdf_path = f'{url.split("/")[3]}_{url.split("/")[4]}.pdf'
-    logging.info("Creating PDF file from downloaded images.")
-    images[0].save(
-        pdf_path, "PDF", resolution=100.0, save_all=True, append_images=images[1:]
-    )
-    logging.debug("Removing temporary image files.")
+    __import__("ipdb").set_trace()
+    logging.info("Creating PDF file from downloaded files.")
+    pdfkit.from_file(page_files, pdf_path, options={"enable-local-file-access": True})
+    logging.debug("Removing temporary files.")
     for page_file in page_files:
         os.remove(page_file)
-    logging.info("Trying to OCR the PDF to make it searchable (not perfect) ...")
-    try:
-        ocrmypdf_returncode = subprocess.run(
-            ["ocrmypdf", pdf_path, f"{os.path.splitext(pdf_path)[0]}_ocr.pdf"],
-            check=True,
-        ).returncode
-        if ocrmypdf_returncode == 0:
-            os.remove(pdf_path)
-    except FileNotFoundError:
-        logging.error(
-            "Cannot OCR PDF file, most likely because `ocrmypdf` is not available."
-        )
+    for image_file in temp_image_files:
+        os.remove(image_file)
+    logging.info("Done.")
 
 
 if __name__ == "__main__":
