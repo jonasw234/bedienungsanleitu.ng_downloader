@@ -51,7 +51,10 @@ def toggle_navigation(driver: webdriver.Chrome, hidden: bool) -> None:
         True if the navigation should be hidden, False if it should be revealed.
     """
     display_style = 'none' if hidden else 'block'
-    driver.execute_script(f"document.getElementsByClassName('glide__arrows')[0].style.display = '{display_style}'")
+    driver.execute_script(
+        "document.getElementsByClassName('glide__arrows')[0].style.display" \
+        f" = '{display_style}'"
+    )
 
 
 def take_screenshot_of_viewer(driver: webdriver.Chrome, page_number: int) -> None:
@@ -229,7 +232,7 @@ def main(url: str) -> None:
 
             current_url = driver.current_url
             if current_url.endswith('/anleitung') and '?' not in current_url:
-                logging.info("Reached the target URL:", current_url)
+                logging.info("Reached the target URL: %s", current_url)
                 break
 
             page_number += 1
