@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(message)s")
 
 
 def main(url: str):
-    """Download the files and create a (searchable PDF file as a result).
+    """Download the files and create a (searchable) PDF file as a result.
 
     Params
     ------
