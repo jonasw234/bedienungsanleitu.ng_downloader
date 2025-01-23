@@ -11,10 +11,13 @@ For the development version:
 ```
 git clone https://github.com/jonasw234/bedienungsanleitu.ng_downloader
 cd bedienungsanleitu.ng_downloader
+git checkout selenium
 python3 setup.py install
 ```
 Or use [`pipx`](https://pypi.org/project/pipx/) and install with
 ```
-pipx install git+https://github.com/jonasw234/bedienungsanleitu.ng_downloader
+pipx install git+https://github.com/jonasw234/bedienungsanleitu.ng_downloader@selenium
 ```
-Needs [`wkhtmltopdf`](https://wkhtmltopdf.org/) installed for the PDF creation.
+To OCR your PDF files, install the [`ocrmypdf`](https://ocrmypdf.readthedocs.io/en/latest/installation.html) Python package and the [`tesseract`](https://tesseract-ocr.github.io/tessdoc/Installation.html) binary.
+
+Using Selenium makes the whole download process *a lot* slower, but it works reliably at least. PRs welcome for the other version so that all the CSS is applied correctly.
