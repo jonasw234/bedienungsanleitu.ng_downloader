@@ -56,7 +56,6 @@ def main(url: str):
             break
     page_files = [f"{file}.html" for file in range(1, page_number)]
     pdf_path = f'{url.split("/")[3]}_{url.split("/")[4]}.pdf'
-    __import__("ipdb").set_trace()
     logging.info("Creating PDF file from downloaded files.")
     pdfkit.from_file(page_files, pdf_path, options={"enable-local-file-access": True})
     logging.debug("Removing temporary files.")
