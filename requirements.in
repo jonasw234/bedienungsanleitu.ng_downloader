@@ -1,4 +1,4 @@
-requests
+selenium
 beautifulsoup4
-pdfkit
-wkhtmltopdf
+PIL
+ocrmypdf

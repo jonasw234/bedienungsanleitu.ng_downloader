@@ -5,14 +5,14 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="bedienungsanleitu.ng_downloader",
-    version="0.0.1",
+    version="1.0.0",
     author="Jonas A. Wendorf",
     description="Downloads PDF files from the bedienungsanleitu.ng website",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/jonasw234/bedienungsanleitu.ng_downloader",
     packages=setuptools.find_packages(),
-    install_requires=["requests", "beautifulsoup4", "pdfkit", "wkhtmltopdf"],
+    install_requires=["selenium", "beautifulsoup4", "PIL", "ocrmypdf"],
     include_package_data=True,
     classifiers=[
         "Environment :: Console",
