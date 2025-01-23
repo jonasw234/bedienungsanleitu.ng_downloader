@@ -35,7 +35,7 @@ def main(url: str):
             f"https://www.bedienungsanleitu.ng/viewer/{viewer_id}/{page_number}/page-{page_number}.page"
         )
         if download.status_code == 200:
-            with open(f"{page_number}.html", "w", encoding="utf-8") as page:
+            with open(f"{page_number}.html", "w", encoding="latin1", errors="ignore") as page:
                 page.write(download.text)
             subsoup = BeautifulSoup(download.text, features="html.parser")
             images = subsoup.find_all("img")
